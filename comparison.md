@@ -12,33 +12,112 @@ $$
 
 The original proof was independently developed by the author before requesting its formalization.
 
-Both proofs aim to establish that the equation has no real solution. However, their mathematical approaches differ in the way they derive and use the necessary constraints.
+Both proofs aim to establish that the equation has no real solution. Although they share part of their mathematical structure, they differ in the techniques used to derive the final contradiction.
 
 ## 2. Original Natural-Language Proof
 
-The original proof relies on trigonometric transformations involving the expressions:
+The original proof begins by rewriting the equation using the identity
 
 $$
-\sin x+\cos x
-\qquad\text{and}\qquad
-\sin x-\cos x.
+\cos X=\sin\left(\frac{\pi}{2}-X\right).
 $$
 
-In particular, it uses the identities:
+It then applies the characterization of equality between two sine values:
 
 $$
-\sin x+\cos x = \sqrt{2}\sin\left(x+\frac{\pi}{4}\right),
+\sin X=\sin Y
+\iff
+\begin{cases}
+X=Y+2k\pi,\\
+\text{or}\\
+X=\pi-Y+2k\pi,
+\end{cases}
+\qquad k\in\mathbb Z.
 $$
 
-and
+This leads to two possible cases:
 
 $$
-\sin x-\cos x = \sqrt{2}\sin\left(x-\frac{\pi}{4}\right).
+\sin x+\cos x=\frac{\pi}{2}-2k\pi
+\tag{1}
 $$
 
-These transformations are used to derive constraints on the possible values of the expressions and ultimately obtain a contradiction involving an integer parameter.
+or
 
-The proof therefore follows a trigonometric approach based on angle transformations and the resulting restrictions on the integer parameter.
+$$
+\sin x-\cos x=\frac{\pi}{2}+2k\pi.
+\tag{2}
+$$
+
+The original proof then treats these cases separately.
+
+### Case 1
+
+It uses the trigonometric identity
+
+$$
+\sin x+\cos x =\sqrt{2}\sin\left(x+\frac{\pi}{4}\right).
+$$
+
+Since the sine function is bounded by $-1$ and $1$, it obtains
+
+$$
+-1\leq
+\frac{\sqrt{2}}{2}
+\left(\frac{\pi}{2}-2k\pi\right)
+\leq 1.
+$$
+
+After rearranging, this gives
+
+$$
+\frac{\pi-2\sqrt{2}}{4\pi}
+\leq k\leq
+\frac{\pi+2\sqrt{2}}{4\pi}.
+$$
+
+Using elementary inequalities involving $\pi$ and $\sqrt{2}$, the proof establishes
+
+$$
+0<k<1.
+$$
+
+This is impossible because $k$ is an integer.
+
+### Case 2
+
+Similarly, the proof uses
+
+$$
+\sin x-\cos x=\sqrt{2}\sin\left(x-\frac{\pi}{4}\right).
+$$
+
+The bound on the sine function gives
+
+$$
+-\sqrt{2}
+\leq
+\frac{\pi}{2}+2k\pi
+\leq \sqrt{2}.
+$$
+
+Rearranging yields
+
+$$
+\frac{-\pi-2\sqrt{2}}{4\pi}
+\leq k\leq
+\frac{-\pi+2\sqrt{2}}{4\pi}.
+$$
+
+The inequalities involving $\pi$ and $\sqrt{2}$ then imply
+
+$$
+-1<k<0,
+$$
+
+which is also impossible for an integer.
+
+Thus, neither case can occur.
 
 ## 3. AI-Generated Lean Implementation
 
@@ -48,65 +127,106 @@ The AI model was given the following prompt:
 
 The generated implementation was successfully accepted by the Lean kernel.
 
-The proof begins by rewriting the cosine expression using:
+The proof first rewrites the cosine expression using
 
 $$
-\cos(\cos x)=\sin\left(\frac{\pi}{2}-\cos x\right).
+\cos(\cos x) =\sin\left(\frac{\pi}{2}-\cos x\right).
 $$
 
-It then applies the characterization of equality between two sine values, using `Real.sin_eq_sin_iff`, to obtain two possible cases involving an integer parameter $k$.
+It then uses `Real.sin_eq_sin_iff` to obtain two possible cases involving an integer parameter.
 
-The implementation subsequently considers the expressions:
-
-$$
-\sin x+\cos x
-$$
-
-and
+The implementation subsequently establishes the following general result:
 
 $$
-\sin x-\cos x.
+\forall m\in\mathbb Z,\qquad
+\left(\left(2m+\frac12\right)\pi\right)^2>2.
 $$
 
-For each case, it establishes a squared upper bound:
+To establish this result, it first proves
 
 $$
-(\sin x+\cos x)^2\leq 2,
+\left(2m+\frac12\right)^2\geq\frac14.
 $$
 
-or
+This follows from the fact that $2m+\frac12$ is a half-integer and therefore cannot have an absolute value smaller than $\frac12$.
+
+It also uses
+
+$$
+\pi>3
+\quad\Longrightarrow\quad
+\pi^2>9.
+$$
+
+Combining these inequalities gives
+
+$$
+\left(2m+\frac12\right)^2\pi^2\geq \frac{\pi^2}{4}> \frac94>2.
+$$
+
+The proof then considers the two branches separately.
+
+In the first branch, it establishes
+
+$$
+(\sin x+\cos x)^2\leq 2.
+$$
+
+In the second branch, it establishes
 
 $$
 (\sin x-\cos x)^2\leq 2.
 $$
 
-These bounds are obtained using algebraic reasoning and the non-negativity of squared expressions, automated through Lean's `nlinarith` tactic.
-
-The implementation then establishes that, for every integer $k$,
+These bounds follow from the identity
 
 $$
-\left(\left(2k+\frac12\right)\pi\right)^2>2.
+\sin^2 x+\cos^2 x=1
 $$
 
-This contradicts the upper bounds derived in the two cases.
+and the non-negativity of squared expressions.
+
+The equalities obtained from `Real.sin_eq_sin_iff` identify the corresponding expressions with a quantity of the form
+
+$$
+\left(2m+\frac12\right)\pi.
+$$
+
+This contradicts the previously established lower bound.
+
+The contradictions are discharged using Lean's `nlinarith` tactic.
 
 ## 4. Comparison of the Two Approaches
 
 | Aspect | Original proof | AI-generated Lean proof |
 |---|---|---|
-| Initial approach | Trigonometric transformations | Trigonometric identity and sine equality characterization |
-| Main expressions | $\sin x+\cos x$ and $\sin x-\cos x$ | $\sin x+\cos x$ and $\sin x-\cos x$ |
-| Main technique | Angle transformations using $\pi/4$ | Algebraic inequalities and squared expressions |
-| Integer parameter | Used to derive restrictions on possible values | Obtained through `Real.sin_eq_sin_iff` |
-| Contradiction | Derived from the original trigonometric constraints | Derived from lower and upper bounds on squared expressions |
+| Initial transformation | Converts cosine into sine | Same transformation |
+| Equality of sine values | Derives two cases using the sine characterization | Uses `Real.sin_eq_sin_iff` |
+| Main expressions | $\sin x+\cos x$ and $\sin x-\cos x$ | Same expressions |
+| Treatment of the expressions | Angle transformations involving $\pi/4$ | Algebraic manipulation of squared expressions |
+| Main inequalities | Bounds derived from $-1\leq\sin t\leq1$ | Bounds on squared expressions |
+| Treatment of the integer | Shows that $k$ belongs to an interval containing no integer | Establishes a lower bound for the square of a half-integer multiple of $\pi$ |
+| Final contradiction | Excludes integer values in $(0,1)$ and $(-1,0)$ | Contradicts the upper bounds of $2$ |
 
-The comparison reveals that the generated implementation retains some of the mathematical structure of the original proof, particularly the use of the two expressions and an integer parameter.
+The comparison reveals that the generated implementation preserves several structural elements of the original proof.
 
-However, it does not fully reproduce the original sequence of trigonometric transformations and deductions. Instead, it relies on algebraic inequalities to establish the contradiction.
+In particular, both approaches:
+
+- Start from the same trigonometric transformation.
+- Obtain two possible cases.
+- Introduce an integer parameter.
+- Examine the expressions $\sin x+\cos x$ and $\sin x-\cos x$.
+- Derive a contradiction in each case.
+
+However, the methods used to establish the contradictions are different.
+
+The original proof relies on trigonometric angle transformations and interval constraints on the integer parameter. The Lean implementation instead uses algebraic inequalities involving squared expressions and a lower bound for the square of a half-integer multiple of $\pi$.
+
+Therefore, the generated implementation preserves part of the original mathematical structure but does not fully reproduce its reasoning strategy.
 
 ## 5. Interpretation: Formal Correctness vs. Semantic Fidelity
 
-The experiment illustrates two distinct properties of mathematical formalization.
+This experiment illustrates two distinct properties of mathematical formalization.
 
 **Formal correctness** concerns whether the proof assistant verifies that the formal argument establishes the specified proposition under its assumptions.
 
@@ -114,11 +234,11 @@ The experiment illustrates two distinct properties of mathematical formalization
 
 In this experiment, the generated Lean implementation satisfies the first criterion: it is successfully accepted by Lean.
 
-However, it does not fully preserve the reasoning strategy of the original proof. Some of the original trigonometric reasoning is replaced by algebraic inequalities and automated nonlinear arithmetic.
+However, it does not fully preserve the original reasoning strategy. In particular, the trigonometric transformations used to derive the integer intervals are replaced by algebraic inequalities.
 
 This distinction requires an important qualification.
 
-A different proof strategy is not inherently a mathematical error. If the objective is simply to prove a theorem, an alternative valid proof is entirely acceptable. However, if the objective is to formalize a particular mathematical argument, replacing parts of its reasoning raises a question of semantic fidelity.
+A different proof strategy is not inherently a mathematical error. If the objective is simply to prove a theorem, an alternative valid proof is entirely acceptable. However, if the objective is to formalize a particular mathematical argument, replacing its reasoning raises a question of semantic fidelity.
 
 The original prompt requested Lean code "for the following proof", suggesting an intention to formalize the supplied argument. Nevertheless, it did not explicitly prohibit alternative proof strategies.
 
@@ -126,7 +246,7 @@ The original prompt requested Lean code "for the following proof", suggesting an
 
 This case study illustrates how an AI system can generate a formally valid Lean proof without fully preserving the mathematical reasoning of the original natural-language argument.
 
-The generated proof establishes the required theorem, but its reasoning differs from the original approach in several steps.
+The generated implementation retains the overall structure of the proof, including its two cases and the expressions involved, but replaces the original method for deriving the final contradictions.
 
 This does not imply that the generated proof is mathematically incorrect. Rather, it demonstrates that successful formal verification alone cannot establish that a formal proof faithfully represents the mathematical argument it was intended to formalize.
 
