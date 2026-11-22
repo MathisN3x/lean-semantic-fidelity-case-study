@@ -1,0 +1,79 @@
+\documentclass{article}
+\usepackage{graphicx}
+\usepackage{mathtools}
+\usepackage{amssymb}
+
+\title{IMC 2026 P1}
+\author{W.F Mathis BILLA}
+\date{November 2026}
+
+\begin{document}
+
+\maketitle
+
+\textbf{P1:} Show that the equation $\cos(\cos x)=\sin(\sin x)$ has no real solution.
+
+
+
+Let's call the equation $(A)$: $\cos(\cos x)=\sin(\sin x)$.
+
+Suppose $x \in \mathbb{R}$ is a solution of $(A)$.
+
+Using the identity $\cos X=\sin\left(\frac{\pi}{2}-X\right)$ we can write:
+$$
+\sin\left(\frac{\pi}{2}-\cos x\right)=\sin(\sin x)
+$$
+and since $\sin X=\sin Y \iff X=Y+2k\pi$ or $X=\pi-Y+2k\pi$ $(k \in \mathbb{Z})$, we get
+$$
+\cos x+\sin x=\frac{\pi}{2}-2k\pi \quad (1)
+\qquad \textbf{or} \qquad
+\sin x-\cos x=\frac{\pi}{2}+2k\pi \quad (2)
+\qquad (k \in \mathbb{Z}).
+$$
+
+
+
+\textbf{(1).}
+\begin{align*}
+(1) &\iff \sqrt{2}\cdot\sin\left(x+\frac{\pi}{4}\right)=\frac{\pi}{2}-2k\pi \\
+    &\iff \sin\left(x+\frac{\pi}{4}\right)=\frac{\sqrt{2}}{2}\left(\frac{\pi}{2}-2k\pi\right)
+\end{align*}
+We know $-1\le\sin X\le 1$ $\;\forall X\in\mathbb{R}$. So we have
+\begin{align*}
+-1 \le \frac{\sqrt{2}}{2}\left(\frac{\pi}{2}-2k\pi\right) \le 1
+&\iff -\sqrt{2}\le \frac{\pi}{2}-2k\pi\le\sqrt{2} \\
+&\iff \frac{1}{2}\left(\frac{\pi}{2}-\sqrt{2}\right)\le k\pi\le \frac{1}{2}\left(\frac{\pi}{2}+\sqrt{2}\right) \\
+&\iff \frac{\pi-2\sqrt{2}}{4\pi}\le k\le\frac{\pi+2\sqrt{2}}{4\pi}.
+\end{align*}
+Since $\pi>3$ and $2\sqrt{2}<3$ (because $8<9$), we have $\pi-2\sqrt{2}>0$. Also $\pi+2\sqrt{2}<4\pi$, because $2\sqrt{2}<3\pi$. So
+$$
+0<\frac{\pi-2\sqrt{2}}{4\pi}\le k\le\frac{\pi+2\sqrt{2}}{4\pi}<1,
+$$
+and no integer $k$ satisfies this.
+
+
+\textbf{(2).}
+Since $\sin\left(x-\frac{\pi}{4}\right)=\frac{\sqrt{2}}{2}(\sin x-\cos x)$,
+\begin{align*}
+(2) &\iff \sin\left(x-\frac{\pi}{4}\right)=\frac{\sqrt{2}}{2}\left(\frac{\pi}{2}+2k\pi\right).
+\end{align*}
+As before, $-1\le \frac{\sqrt{2}}{2}\left(\frac{\pi}{2}+2k\pi\right)\le 1$, so
+\begin{align*}
+-\sqrt{2}\le \frac{\pi}{2}+2k\pi\le\sqrt{2}
+&\iff \frac{-\pi-2\sqrt{2}}{4\pi}\le k\le\frac{-\pi+2\sqrt{2}}{4\pi}.
+\end{align*}
+Since $2\sqrt{2}<3<\pi$ and $\pi+2\sqrt{2}<4\pi$, we get
+$$
+-1<\frac{-\pi-2\sqrt{2}}{4\pi}\le k\le\frac{-\pi+2\sqrt{2}}{4\pi}<0,
+$$
+and again no integer $k$ satisfies this.
+
+
+
+ Hence neither $(1)$ nor $(2)$ can hold for any $k\in\mathbb{Z}$, which contradicts the existence of $x$. We conclude that $(A)$ has no solution.
+
+\\
+\\
+
+
+\end{document}
