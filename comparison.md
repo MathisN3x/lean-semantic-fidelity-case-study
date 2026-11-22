@@ -79,7 +79,7 @@ $$
 Using elementary inequalities involving $\pi$ and $\sqrt{2}$, the proof establishes
 
 $$
-0<k<1.
+0 < k <1.
 $$
 
 This is impossible because $k$ is an integer.
@@ -112,7 +112,7 @@ $$
 The inequalities involving $\pi$ and $\sqrt{2}$ then imply
 
 $$
--1<k<0,
+-1 < k <0,
 $$
 
 which is also impossible for an integer.
