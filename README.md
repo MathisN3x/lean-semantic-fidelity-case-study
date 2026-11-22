@@ -136,3 +136,5 @@ Independent exploration of mathematical formalization, Lean, and AI-assisted mat
 ---
 
 **This repository accompanies an article on semantic fidelity in AI-driven autoformalization.**
+[[accessible here](https://mathisn3x.github.io/the-random-walk/posts/autoformalization-lean/)]
+
